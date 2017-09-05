@@ -40,7 +40,9 @@ function propMeUp(component, { customGenerator = {}, props = {}, onlyRequired = 
   }
   return Object.keys(component.propTypes).reduce((fakeProps, propName) => {
     const type = component.propTypes[propName].type;
-    if (customGenerator[type]) {
+    if (props[propName]) {
+      return Object.assign(fakeProps, { [propName]: props[propName] });
+    } else if (customGenerator[type]) {
       // todo(aleck): get spread working with jest
       // return { ...fakeProps, [propName]: custom.type() };
       return Object.assign(fakeProps, { [propName]: customGenerator[type]() });

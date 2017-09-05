@@ -28,27 +28,28 @@ describe('Simple PropTypes are annotated', () => {
 });
 
 describe('generates fake props', () => {
-  it('generates fake props for a simple react component ', () => {
-    function Button({ text }) {
+  let Button;
+  beforeEach(() => {
+    Button = ({ text }) => {
       return <div>{text}</div>;
-    }
+    };
     const propTypes = {
       text: PropTypes.string,
     };
     Button.propTypes = propTypes;
+  });
+  it('generates fake props for a simple react component ', () => {
     const fakeProps = propMeUp(Button);
     expect(fakeProps).toEqual({ text: '' });
   });
 
-  it('uses custom fake props', () => {
-    function Button({ text }) {
-      return <div>{text}</div>;
-    }
-    const propTypes = {
-      text: PropTypes.string,
-    };
-    Button.propTypes = propTypes;
+  it('can use a custom fake props generator', () => {
     const fakeProps = propMeUp(Button, { customGenerator: { string: () => 'hi' } });
     expect(fakeProps).toEqual({ text: 'hi' });
+  });
+
+  it('allows setting default props', () => {
+    const fakeProps = propMeUp(Button, { props: { text: 'default prop' } });
+    expect(fakeProps).toEqual({ text: 'default prop' });
   });
 });
