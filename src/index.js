@@ -26,14 +26,29 @@ function addTypeToPropTypes() {
 
 addTypeToPropTypes();
 
-function propMeUp(component, { defaultFunction = noop, onlyRequired = false }) {
-  if (!component.propTypes || Object.keys(c.propTypes).length === 0) {
+const string = () => '';
+const number = () => Math.floor(Math.random() * 100);
+
+const faker = {
+  string,
+  number,
+};
+
+function propMeUp(component, { custom = {}, onlyRequired = false } = {}) {
+  if (!component.propTypes || Object.keys(component.propTypes).length === 0) {
     return;
   }
+  return Object.keys(component.propTypes).reduce((fakeProps, propName) => {
+    const type = component.propTypes[propName].type;
+    if (custom[type]) {
+      // todo(aleck): get spread working with jest
+      // return { ...fakeProps, [propName]: custom.type() };
+      return Object.assign(fakeProps, { [propName]: custom[type]() });
+    }
 
-  // return Object.entries(component).map(([name, prop]) = {
-  //   console.log(name)
-  // })
+    // return { ...fakeProps, [propName]: faker[type]() };
+    return Object.assign(fakeProps, { [propName]: faker[type]() });
+  }, {});
 }
 
 export default propMeUp;

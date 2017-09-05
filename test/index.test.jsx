@@ -18,11 +18,37 @@ describe('Simple PropTypes are annotated', () => {
     });
   });
 
-  it('adds a required property to simple types', () => {
+  it('props that are isRequired have a required prop == true', () => {
     const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
     simpleTypes.forEach(prop => {
       expect(PropTypes[prop].required).toBe(false);
       expect(PropTypes[prop].isRequired.required).toBe(true);
     });
+  });
+});
+
+describe('generates fake props', () => {
+  it('generates fake props for a simple react component ', () => {
+    function Button({ text }) {
+      return <div>{text}</div>;
+    }
+    const propTypes = {
+      text: PropTypes.string,
+    };
+    Button.propTypes = propTypes;
+    const fakeProps = propMeUp(Button);
+    expect(fakeProps).toEqual({ text: '' });
+  });
+
+  it('uses custom fake props', () => {
+    function Button({ text }) {
+      return <div>{text}</div>;
+    }
+    const propTypes = {
+      text: PropTypes.string,
+    };
+    Button.propTypes = propTypes;
+    const fakeProps = propMeUp(Button, { custom: { string: () => 'hi' } });
+    expect(fakeProps).toEqual({ text: 'hi' });
   });
 });
