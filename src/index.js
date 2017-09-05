@@ -21,14 +21,7 @@ function addTypeToPropTypes() {
     PropTypes[prop].isRequired.type = prop;
     PropTypes[prop].isRequired.required = true;
   });
-  // const og = val;
-  // val = function(arg) {
-  //   this.arg = arg;
-  //   this.type = propType;
-  //   this.required = false;
-  //   this.isRequired = { type: propType, arg, required: false };
-  //   return og(arg);
-  // };
+  // todo(aleck): add complex type annotations
 }
 
 addTypeToPropTypes();
