@@ -34,16 +34,16 @@ const faker = {
   number,
 };
 
-function propMeUp(component, { custom = {}, onlyRequired = false } = {}) {
+function propMeUp(component, { customGenerator = {}, props = {}, onlyRequired = false } = {}) {
   if (!component.propTypes || Object.keys(component.propTypes).length === 0) {
     return;
   }
   return Object.keys(component.propTypes).reduce((fakeProps, propName) => {
     const type = component.propTypes[propName].type;
-    if (custom[type]) {
+    if (customGenerator[type]) {
       // todo(aleck): get spread working with jest
       // return { ...fakeProps, [propName]: custom.type() };
-      return Object.assign(fakeProps, { [propName]: custom[type]() });
+      return Object.assign(fakeProps, { [propName]: customGenerator[type]() });
     }
 
     // return { ...fakeProps, [propName]: faker[type]() };

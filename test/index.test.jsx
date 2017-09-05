@@ -48,7 +48,7 @@ describe('generates fake props', () => {
       text: PropTypes.string,
     };
     Button.propTypes = propTypes;
-    const fakeProps = propMeUp(Button, { custom: { string: () => 'hi' } });
+    const fakeProps = propMeUp(Button, { customGenerator: { string: () => 'hi' } });
     expect(fakeProps).toEqual({ text: 'hi' });
   });
 });
