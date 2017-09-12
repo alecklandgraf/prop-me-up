@@ -24,6 +24,28 @@ function addTypeToPropTypes() {
   // todo(aleck): add complex type annotations
 }
 
+// borrowed from react-generate-props
+const GENERATORS = {
+  // Simple types
+  array: () => [],
+  bool: () => true,
+  func: () => sinon.spy(),
+  number: () => 1,
+  object: () => ({}),
+  string: () => 'A String',
+  any: () => 'Any',
+  element: () => React.createElement('div'),
+  node: () => [React.createElement('div'), React.createElement('div')],
+
+  // Complex types
+  arrayOf: type => [generateOneProp(type)],
+  instanceOf: klass => new klass(),
+  objectOf: type => ({ key: generateOneProp(type) }),
+  oneOf: values => _.sample(values),
+  oneOfType: types => generateOneProp(_.extend(_.sample(types), { forceGeneration: true })),
+  shape: shape => generateProps(shape),
+};
+
 addTypeToPropTypes();
 
 const string = () => '';
