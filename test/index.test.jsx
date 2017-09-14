@@ -3,40 +3,45 @@ import { shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 import propMeUp from '../src';
 
-describe('Simple PropTypes are annotated', () => {
-  it('smoke test', () => {
-    expect(PropTypes.string.type).toBe('string');
-    expect(PropTypes.string.required).toBe(false);
-    expect(PropTypes.string.isRequired.required).toBe(true);
-    expect(PropTypes.string.isRequired.type).toBe('string');
-  });
+describe('PropType annotation', () => {
+  describe('Simple PropTypes', () => {
+    it('smoke test', () => {
+      expect(PropTypes.string.type).toBe('string');
+      expect(PropTypes.string.required).toBe(false);
+      expect(PropTypes.string.isRequired.required).toBe(true);
+      expect(PropTypes.string.isRequired.type).toBe('string');
+    });
 
-  it('complex smoke test', () => {
-    expect(PropTypes.arrayOf(PropTypes.string).type).toBe('arrayOf');
-    expect(PropTypes.arrayOf(PropTypes.string).arg.type).toBe('string');
-    expect(PropTypes.arrayOf(PropTypes.string).required).toBe(false);
-    expect(PropTypes.arrayOf(PropTypes.string).isRequired.type).toBe('arrayOf');
-    expect(PropTypes.arrayOf(PropTypes.string).isRequired.arg.type).toBe('string');
-    expect(PropTypes.arrayOf(PropTypes.string).isRequired.arg.required).toBe(false);
-  });
+    it('adds a type proptery to simple types', () => {
+      const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
+      simpleTypes.forEach(prop => {
+        expect(PropTypes[prop].type).toBe(prop);
+      });
+    });
 
-  it('adds a type proptery to simple types', () => {
-    const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
-    simpleTypes.forEach(prop => {
-      expect(PropTypes[prop].type).toBe(prop);
+    it('props that are isRequired have a required prop == true', () => {
+      const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
+      simpleTypes.forEach(prop => {
+        expect(PropTypes[prop].required).toBe(false);
+        expect(PropTypes[prop].isRequired.required).toBe(true);
+      });
     });
   });
 
-  it('props that are isRequired have a required prop == true', () => {
-    const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
-    simpleTypes.forEach(prop => {
-      expect(PropTypes[prop].required).toBe(false);
-      expect(PropTypes[prop].isRequired.required).toBe(true);
+  describe('Complex PropTypes', () => {
+    it('complex smoke test', () => {
+      expect(PropTypes.arrayOf(PropTypes.string).type).toBe('arrayOf');
+      expect(PropTypes.arrayOf(PropTypes.string).arg.type).toBe('string');
+      expect(PropTypes.arrayOf(PropTypes.string).required).toBe(false);
+      expect(PropTypes.arrayOf(PropTypes.string).isRequired).toEqual(expect.any(Function));
+      expect(PropTypes.arrayOf(PropTypes.string).isRequired.type).toBe('arrayOf');
+      expect(PropTypes.arrayOf(PropTypes.string).isRequired.arg.type).toBe('string');
+      expect(PropTypes.arrayOf(PropTypes.string).isRequired.required).toBe(true);
     });
   });
 });
 
-describe('generates fake props', () => {
+describe('Generates fake props', () => {
   let Button;
   beforeEach(() => {
     Button = ({ text }) => {

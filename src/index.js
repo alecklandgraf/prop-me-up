@@ -23,14 +23,11 @@ function addTypeToPropTypes() {
   });
   // todo(aleck): add complex type annotations
   complexTypes.forEach(prop => {
-    const cb = PropTypes[prop];
+    const originalPropType = PropTypes[prop];
     PropTypes[prop] = function(arg) {
-      const propType = cb(arg);
-      propType.arg = arg;
-      propType.type = prop;
-      propType.required = false;
-      propType.isRequired.type = prop;
-      propType.isRequired.arg = arg;
+      const propType = originalPropType(arg);
+      Object.assign(propType, { arg, type: prop, required: false });
+      Object.assign(propType.isRequired, { arg, type: prop, required: true });
       return propType;
     };
   });
