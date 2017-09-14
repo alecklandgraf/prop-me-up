@@ -3,9 +3,9 @@
 Auto-generate fake props for your React components by their prop types.
 
 This is largely borrowed from `react-generate-props` with a couple differences:
-  - refactored not to depend on `lodash`
-  - includes `faker` for smart default props
-  - allows setting explicit props or providing a custom prop type generator
+  - no `lodash` dependency
+  - set explicit props
+  - customize the PropType generator (like faker)
 
   ### Getting started
 Installation
