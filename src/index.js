@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import faker from 'faker';
 
 const noop = () => undefined;
 
@@ -37,11 +38,11 @@ function addTypeToPropTypes() {
 const GENERATORS = {
   // Simple types
   array: () => [],
-  bool: () => true,
-  func: () => sinon.spy(),
-  number: () => 1,
+  bool: () => faker.random.boolean(),
+  func: () => () => undefined,
+  number: () => faker.random.number(),
   object: () => ({}),
-  string: () => 'A String',
+  string: () => faker.random.word(),
   any: () => 'Any',
   element: () => React.createElement('div'),
   node: () => [React.createElement('div'), React.createElement('div')],
@@ -57,14 +58,6 @@ const GENERATORS = {
 
 addTypeToPropTypes();
 
-const string = () => '';
-const number = () => Math.floor(Math.random() * 100);
-
-const faker = {
-  string,
-  number,
-};
-
 function propMeUp(component, { customGenerator = {}, props = {}, onlyRequired = false } = {}) {
   if (!component.propTypes || Object.keys(component.propTypes).length === 0) {
     return;
@@ -74,13 +67,10 @@ function propMeUp(component, { customGenerator = {}, props = {}, onlyRequired = 
     if (props[propName]) {
       return Object.assign(fakeProps, { [propName]: props[propName] });
     } else if (customGenerator[type]) {
-      // todo(aleck): get spread working with jest
-      // return { ...fakeProps, [propName]: custom.type() };
-      return Object.assign(fakeProps, { [propName]: customGenerator[type]() });
+      return { ...fakeProps, [propName]: customGenerator[type]() };
     }
 
-    // return { ...fakeProps, [propName]: faker[type]() };
-    return Object.assign(fakeProps, { [propName]: faker[type]() });
+    return { ...fakeProps, [propName]: GENERATORS[type]() };
   }, {});
 }
 

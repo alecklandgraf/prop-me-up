@@ -52,9 +52,10 @@ describe('Generates fake props', () => {
     };
     Button.propTypes = propTypes;
   });
+
   it('generates fake props for a simple react component ', () => {
     const fakeProps = propMeUp(Button);
-    expect(fakeProps).toEqual({ text: '' });
+    expect(fakeProps.text).toEqual(expect.any(String));
   });
 
   it('can use a custom fake props generator', () => {
