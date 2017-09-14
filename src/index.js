@@ -22,6 +22,18 @@ function addTypeToPropTypes() {
     PropTypes[prop].isRequired.required = true;
   });
   // todo(aleck): add complex type annotations
+  complexTypes.forEach(prop => {
+    const cb = PropTypes[prop];
+    PropTypes[prop] = function(arg) {
+      const propType = cb(arg);
+      propType.arg = arg;
+      propType.type = prop;
+      propType.required = false;
+      propType.isRequired.type = prop;
+      propType.isRequired.arg = arg;
+      return propType;
+    };
+  });
 }
 
 // borrowed from react-generate-props

@@ -11,6 +11,15 @@ describe('Simple PropTypes are annotated', () => {
     expect(PropTypes.string.isRequired.type).toBe('string');
   });
 
+  it('complex smoke test', () => {
+    expect(PropTypes.arrayOf(PropTypes.string).type).toBe('arrayOf');
+    expect(PropTypes.arrayOf(PropTypes.string).arg.type).toBe('string');
+    expect(PropTypes.arrayOf(PropTypes.string).required).toBe(false);
+    expect(PropTypes.arrayOf(PropTypes.string).isRequired.type).toBe('arrayOf');
+    expect(PropTypes.arrayOf(PropTypes.string).isRequired.arg.type).toBe('string');
+    expect(PropTypes.arrayOf(PropTypes.string).isRequired.arg.required).toBe(false);
+  });
+
   it('adds a type proptery to simple types', () => {
     const simpleTypes = ['array', 'bool', 'func', 'number', 'object', 'string', 'symbol', 'any'];
     simpleTypes.forEach(prop => {
