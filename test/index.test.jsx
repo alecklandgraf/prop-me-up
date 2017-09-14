@@ -58,6 +58,11 @@ describe('Generates fake props', () => {
     expect(fakeProps.text).toEqual(expect.any(String));
   });
 
+  it('can generate fake props only for required props', () => {
+    const fakeProps = propMeUp(Button, { onlyRequired: true });
+    expect(fakeProps.text).toBeUndefined();
+  });
+
   it('can use a custom fake props generator', () => {
     const fakeProps = propMeUp(Button, { customGenerator: { string: () => 'hi' } });
     expect(fakeProps).toEqual({ text: 'hi' });

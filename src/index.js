@@ -64,6 +64,9 @@ function propMeUp(component, { customGenerator = {}, props = {}, onlyRequired = 
   }
   return Object.keys(component.propTypes).reduce((fakeProps, propName) => {
     const type = component.propTypes[propName].type;
+    if (onlyRequired && !component.propTypes[propName].required) {
+      return fakeProps;
+    }
     if (props[propName]) {
       return Object.assign(fakeProps, { [propName]: props[propName] });
     } else if (customGenerator[type]) {
